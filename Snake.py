@@ -130,4 +130,4 @@ def game_over():
 
 def check_if_borders():
     if snake_x > virtual_game_x or snake_x < 0 or snake_y > virtual_game_y or snake_y < 0:
-        ga
+            ga
