@@ -130,4 +130,37 @@ def game_over():
 
 def check_if_borders():
     if snake_x > virtual_game_x or snake_x < 0 or snake_y > virtual_game_y or snake_y < 0:
-            ga
+        game_over()
+
+
+def check_we_touch_self(f_x, f_y):
+    global Game_Running
+    if not (snake_x_nav == 0 and snake_y_nav == 0):
+        for i in range(len(snake_list)):
+            if snake_list[i][0] == f_x and snake_list[i][1] == f_y:
+                print("found!!!")
+                Game_Running = False
+
+
+# основной цикл игры
+while Game_Running:
+    check_can_we_delete_snake_item()
+    check_if_we_found_present()
+    check_if_borders()
+    check_we_touch_self(snake_x + snake_x_nav, snake_y + snake_y_nav)
+    snake_x = snake_x + snake_x_nav
+    snake_y = snake_y + snake_y_nav
+    snake_paint_item(canvas, snake_x, snake_y)
+    tk.update_idletasks()
+    tk.update()
+    time.sleep(0.15)
+
+
+# def fun_nothing(event):
+#     pass
+
+
+# canvas.bind_all("<KeyPress-Left>", fun_nothing)
+# canvas.bind_all("<KeyPress-Right>", fun_nothing)
+# canvas.bind_all("<KeyPress-Up>", fun_nothing)
+# canvas.bind_all("<KeyPress-Down>", fun_nothing)
