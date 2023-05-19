@@ -1,15 +1,19 @@
 """
 Это игра змеика.В этом файле есть полное описание всех функции.
 """
-# добавляем дополнительные библиотеки для работы с оконными приложениями, даты и времени, случайными числами.
+"""
+Основыне библиотеки для игры
+"""
 from tkinter import *
 import time
 import random
+import matplotlib.pyplot as plt
 
-# основная переменная для игры. Если она True - игра продолжается, иначе заканчивается.
 Game_Running = True
+"""
+Функиция задает размер поля, змеики и цвет змеики.
+"""
 
-# задаём размеры игрового поля, размер одной клетки змейки и её цвета.
 game_width = 500
 game_height = 500
 snake_item = 20
@@ -23,12 +27,16 @@ snake_x = virtual_game_x//2
 snake_y = virtual_game_y//2
 snake_x_nav = 0
 snake_y_nav = 0
+"""
+Функция задает изначальный размер змеики.
+"""
 
-# задаём начальный размер змейки
 snake_list = []
 snake_size = 1
 
-# создаём окно, задаём его название
+"""
+Функция задает название игры.
+"""
 tk = Tk()
 tk.title("Игра Змейка на Python")
 tk.resizable(0, 0)
@@ -37,12 +45,19 @@ canvas = Canvas(tk, width=game_width, height=game_height,
                 bd=0, highlightthickness=0)
 canvas.pack()
 tk.update()
-# задаём цвета квадратикам и их количество
+"""
+Функция задает цвет еды.
+"""
+
 present_color1 = "red"
 present_color2 = "cyan"
 presents_list = []
 presents_size = 20
-# в рандомном порядке вывставляем квадратики на поле
+
+"""
+Данная функция раставляет еду по игровому полю.
+"""
+
 for i in range(presents_size):
     x = random.randrange(virtual_game_x)
     y = random.randrange(virtual_game_y)
@@ -65,7 +80,9 @@ def snake_paint_item(canvas, x, y):
 
 snake_paint_item(canvas, snake_x, snake_y)
 
-
+"""
+Функция проверяет можно ли удалить змеику.
+"""
 def check_can_we_delete_snake_item():
     if len(snake_list) >= snake_size:
         temp_item = snake_list.pop(0)
@@ -73,12 +90,13 @@ def check_can_we_delete_snake_item():
         canvas.delete(temp_item[2])
         canvas.delete(temp_item[3])
 
-
+"""
+Функиция для определения обнаружения еды.
+"""
 def check_if_we_found_present():
     global snake_size
     for i in range(len(presents_list)):
         if presents_list[i][0] == snake_x and presents_list[i][1] == snake_y:
-            # print("found!!!")
             snake_size = snake_size + 1
             canvas.delete(presents_list[i][2])
             canvas.delete(presents_list[i][3])
@@ -114,24 +132,28 @@ def snake_move(event):
     snake_paint_item(canvas, snake_x, snake_y)
     check_if_we_found_present()
 
-
-# задаём вызов обработки нажатий на клавиши
 canvas.bind_all("<KeyPress-a>", snake_move)
 canvas.bind_all("<KeyPress-d>", snake_move)
 canvas.bind_all("<KeyPress-w>", snake_move)
 canvas.bind_all("<KeyPress-s>", snake_move)
 
-
+"""
+Функция отвечает за окончание игры.
+"""
 def game_over():
     global Game_Running
     Game_Running = False
 
-# проверяем не упёрлись ли мы в стену
+"""
+Функция отвечает за проверку столкновения со стеной.
+"""
 def check_if_borders():
     if snake_x > virtual_game_x or snake_x < 0 or snake_y > virtual_game_y or snake_y < 0:
         game_over()
 
-
+"""
+Функция отвечает за проверку стоконовения с телом змеики.
+"""
 def check_we_touch_self(f_x, f_y):
     global Game_Running
     if not (snake_x_nav == 0 and snake_y_nav == 0):
@@ -140,7 +162,9 @@ def check_we_touch_self(f_x, f_y):
                 Game_Running = False
 
 
-# основной цикл игры
+"""
+Основной цикл игры.
+"""
 while Game_Running:
     check_can_we_delete_snake_item()
     check_if_we_found_present()
@@ -154,12 +178,11 @@ while Game_Running:
     time.sleep(0.15)
 
 
-# def fun_nothing(event):
-#     pass
-
-
-# canvas.bind_all("<KeyPress-Left>", fun_nothing)
-# canvas.bind_all("<KeyPress-Right>", fun_nothing)
-# canvas.bind_all("<KeyPress-Up>", fun_nothing)
-# canvas.bind_all("<KeyPress-Down>", fun_nothing)
-
+"""
+Функция выведения финального счета.
+"""
+def score():
+    score = snake_item("score")
+    print('Счет {0}'.format(score))
+   
+print(score)
